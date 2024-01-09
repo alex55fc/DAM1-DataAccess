@@ -1,0 +1,67 @@
+--conexion boletin1
+--boletin 1 
+drop table PROVINCIAS cascade constraints;
+drop table EMPRESAS cascade constraints;
+drop table CONTINENTES cascade constraints;
+drop table ALUMNOS cascade constraints;
+drop table EMPLEADOS cascade constraints;
+
+/* cosas a tener en cuenta:
+check (dato in(datos))
+check (dato = upper(dato))
+check (dato between numero and numero)
+date default sysdate
+default ' '
+insert into  tabla (datos) values (datos)*/
+--Ejercicio1
+create table PROVINCIAS (
+COD_PROVI number(2) primary key,
+NOMBRE varchar2(25) not null,
+PAIS varchar2(25) 
+    constraint PAIS_CK check (PAIS in ('España', 'Portugal', 'Italia'))
+);
+insert into PROVINCIAS (COD_PROVI, NOMBRE, PAIS) values (1, 'Ávila', 'España');
+--ojo al insert
+
+--ejercicio2
+create table EMPRESAS (
+COD_EMPRE number(2) primary key,
+NOMBRE4 varchar2(25) default 'Empresa1' not null ,
+FECHA_CREA date default sysdate + 1--ojo al date default
+);
+insert into EMPRESAS (COD_EMPRE, NOMBRE4) values (20, 'ALfa21S.A');
+
+--ejercicio3
+create table CONTINENTES (
+COD_CONTI number primary key,
+NOMBRE1 varchar2(20) default'EUROPA' not null
+);
+
+--ejercicio4
+create table ALUMNOS(
+codigo number(3) primary key,
+nombre2 varchar2(21) not null,
+apellido varchar2(30) not null,
+curso number,
+fecha_matri date default sysdate,
+    constraint apellido_ck check (apellido = UPPER(apellido)),
+    constraint curso_ck check(curso in(1,2,3))
+);
+--ejercicio5
+create table EMPLEADOS(
+COD_EMPLE number(2) primary key,
+NOMBRE5 varchar2(20) not null,
+Apellido13 varchar2(25),
+Salario number(7,2) check (SALARIO > 0),
+COD_PROVI number(2),
+COD_EMPRE number(2),
+    constraint provi_fk foreign key (COD_PROVI) references PROVINCIAS(COD_PROVI) on delete cascade,
+    constraint empre_fk foreign key (COD_EMPRE) references EMPRESAS(COD_EMPRE),
+    constraint Apellido13_ck_upper check(Apellido13 = upper(Apellido13))
+);
+insert into EMPLEADOS (COD_EMPLE, NOMBRE5, APELLIDO13 , SALARIO) values (30, 'Veronica', 'LOPEZ' ,3000);
+insert into EMPLEADOS (COD_EMPLE, NOMBRE5, Apellido13, COD_PROVI, COD_EMPRE) values (10, 'Sergio', 'PEREZ', 1, 20) ;
+
+--ejercicio6,7,8, es lo mismo de siemore no cambia ni añade nada
+
+
